@@ -1,0 +1,38 @@
+package chatbox;
+
+import java.io.*;
+import java.net.*;
+
+public class DateClient {
+	
+	    public static void main(String[] args) {
+
+	        try {
+	        	String line;
+	            Socket sock = new Socket("127.0.0.1", 6013); //Socket s... #IP Address of server, TCP port
+	            //Read from the server and output to the server 
+	            DataInputStream din = new DataInputStream(sock.getInputStream());
+	            DataOutputStream dout = new DataOutputStream(sock.getOutputStream());
+
+	            BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); //Make more efficient by reading more than one character at once
+				            
+	            String msgin="Client: ", msgout=" "; //Read from the keyboard
+	            while (!msgin.equals("disconnect")) {
+	            	//wait for a connection and when connected, it create a socket object
+	            	System.out.println(new java.util.Date().toString());// will input the date 
+	            	System.out.print("Client: ");// will be printed on the screen and will let the client to input its reply
+	                msgout = br.readLine();//will read the input of the client
+	                dout.writeUTF(msgout);//will write the input of the client into the server
+	                msgin = din.readUTF(); //will read the input of the server
+	                System.out.println("Server: " +msgin); //will appear in the server
+
+	            }
+	           
+	        }catch (IOException ioe){ 
+	        	System.err.println(ioe);
+	        }
+
+	        }
+	    
+
+	}	
