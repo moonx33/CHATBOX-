@@ -1,0 +1,42 @@
+package chatbox;
+
+import java.io.*;
+import java.net.*;
+
+public class DateServer {
+	   public static void main(String[] args ) {
+	       try {
+	    	   
+	    	   
+	           ServerSocket sock = new ServerSocket(6013);
+	           Socket client = sock.accept();
+
+	           DataInputStream din = new DataInputStream(client.getInputStream()); 
+	           DataOutputStream dout = new DataOutputStream(client.getOutputStream());
+
+	           BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	           
+	           //Server socket will wait for the client request made on port 6013, this must be outside the while loop
+
+	           String msgin=" ", msgout="Server: ";
+
+	           while (!msgin.equals("disconnect")) {
+	        	   //wait for a connection and when connected, it create a socket object
+	               msgin = din.readUTF(); //will read the input of the client
+	               System.out.println(new java.util.Date().toString()); // will input the date 
+	               System.out.print("Client: " +msgin+ "\nServer: "); // will be printed on the screen and will let the server to input its reply
+	               msgout = br.readLine(); //will read the input of the server
+	               dout.writeUTF(msgout); //will write the input of the server into the client
+	               dout.flush(); //
+	           }
+	           
+	           client.close();
+	           //it close the data in order to stop the leakage of the data in the server 
+
+
+	        }
+	        catch(IOException ioe){ 
+	        	System.err.println(ioe);
+	        }
+	    }
+}
